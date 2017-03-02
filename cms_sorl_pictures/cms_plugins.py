@@ -4,12 +4,13 @@ from django.utils.translation import ugettext_lazy as _
 from cms_sorl_pictures.models import SorlPicture
 from django.conf import settings
 
+
 class SorlPicturePlugin(CMSPluginBase):
     model = SorlPicture
     name = _("Sorl Picture")
     render_template = "cms/plugins/sorl_picture.html"
     text_enabled = True
-    
+
     def render(self, context, instance, placeholder):
         if instance.url:
             link = instance.url
@@ -17,7 +18,7 @@ class SorlPicturePlugin(CMSPluginBase):
             link = instance.page_link.get_absolute_url()
         else:
             link = ""
-        
+
         picture_options = {}
         if instance.crop:
             picture_options['crop'] = instance.crop
@@ -39,22 +40,23 @@ class SorlPicturePlugin(CMSPluginBase):
             picture_options['orientation'] = 'TRUE'
         else:
             picture_options['orientation'] = 'FALSE'
-        
+
         picture_dimensions = "200x200"
         if instance.height or instance.width:
             picture_dimensions = str(instance.width) + "x" + str(instance.height)
-        
+
         context.update({
             'picture': instance,
             'picture_dimensions': picture_dimensions,
             'picture_options': picture_options,
-            'link': link, 
+            'link': link,
             'placeholder': placeholder
         })
-        return context 
-    
+        return context
+
     def icon_src(self, instance):
         # TODO - possibly use 'instance' and provide a thumbnail image
         return settings.STATIC_URL + u"cms/images/plugins/image.png"
- 
+
+
 plugin_pool.register_plugin(SorlPicturePlugin)

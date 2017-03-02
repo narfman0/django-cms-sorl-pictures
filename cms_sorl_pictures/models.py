@@ -4,6 +4,7 @@ from cms.models import CMSPlugin, Page
 from sorl.thumbnail import ImageField
 from os.path import basename
 
+
 class SorlPicture(CMSPlugin):
     """
     A Picture with or without a link
@@ -15,19 +16,19 @@ class SorlPicture(CMSPlugin):
                      (LEFT, _("left")),
                      (RIGHT, _("right")),
                      )
-    
+
     PNG = "PNG"
     JPEG = "JPEG"
     FORMAT_CHOICES = ((PNG, _("png")),
                       (JPEG, _("jpeg")),
                       )
-    
+
     RGB = "RGB"
     GRAY = "GRAY"
     COLORSPACE_CHOICES = ((RGB, _("rgb")),
                           (GRAY, _("gray")),
                           )
-    
+
     BOTTOM = "bottom"
     TOP = "top"
     LEFT = "left"
@@ -42,9 +43,9 @@ class SorlPicture(CMSPlugin):
                     (BOTTOM, _("bottom")),
                     (LEFT, _("left")),
                     )
-    
-    
-    image = ImageField(_("image"), upload_to=CMSPlugin.get_media_path)
+
+
+    image = ImageField(_("image"), upload_to='images')
     url = models.CharField(_("link"), max_length=255, blank=True, null=True, help_text=_("if present image will be clickable"))
     page_link = models.ForeignKey(Page, verbose_name=_("page"), null=True, blank=True, help_text=_("if present image will be clickable"))
     alt = models.CharField(_("alternate text"), max_length=255, blank=True, null=True, help_text=_("textual description of the image"))
@@ -59,7 +60,7 @@ class SorlPicture(CMSPlugin):
     format = models.CharField(_("format"), max_length=10, blank=True, null=True, choices=FORMAT_CHOICES)
     colorspace = models.CharField(_("colorspace"), max_length=10, blank=True, null=True, help_text=_("create thumbnails in color or grayscale"), choices=COLORSPACE_CHOICES)
     orientation = models.BooleanField(_("orientation"), default=True, help_text=_("orient the thumbnails using the source image's EXIF tags for orientation"))
-    
+
     def __unicode__(self):
         if self.alt:
             return self.alt[:40]
